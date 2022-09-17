@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, Image } from "react-native";
+import like from "../../assets/images/like.png";
 import {
   Entypo,
   AntDesign,

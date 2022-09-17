@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 
 interface IconButtonProps {
@@ -9,10 +9,10 @@ interface IconButtonProps {
 
 const IconButton: React.FC<IconButtonProps> = ({ Icon, name, text }) => {
   return (
-    <View style={styles.iconButton}>
+    <TouchableOpacity style={styles.iconButton}>
       <Icon style={styles.icon} name={name} size={18} color="grey" />
       <Text style={styles.iconButtonText}>{text}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

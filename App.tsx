@@ -1,15 +1,14 @@
+import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { FlatList, StyleSheet, View } from "react-native";
-import FeedPost from "./src/components/FeedPost";
-import postsData from "./assets/data/posts.json";
+import { StyleSheet, View } from "react-native";
+import FeedScreen from "./src/screens/FeedScreen";
+import CreatePostScreen from "./src/screens/CreatePostScreen";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <FlatList
-        data={postsData}
-        renderItem={({ item }) => <FeedPost post={item} />}
-      />
+      <CreatePostScreen />
+
       <StatusBar style="auto" />
     </View>
   );
