@@ -1,15 +1,13 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
-import FeedScreen from "./src/screens/FeedScreen";
-import CreatePostScreen from "./src/screens/CreatePostScreen";
+import Navigator from "./src/navigation/index";
 
 export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      {/* <FeedScreen /> */}
-      <CreatePostScreen />
+      <Navigator />
     </View>
   );
 }
@@ -17,9 +15,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
   },
 });

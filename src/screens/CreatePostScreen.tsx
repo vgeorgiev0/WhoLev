@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const user = {
   id: "u1",
@@ -22,6 +23,8 @@ const user = {
 interface CreatePostScreenProps {}
 
 const CreatePostScreen: React.FC<CreatePostScreenProps> = () => {
+  const navigation = useNavigation();
+
   const [status, setStatus] = useState("");
   const [image, setImage] = useState<string>();
 
@@ -44,6 +47,7 @@ const CreatePostScreen: React.FC<CreatePostScreenProps> = () => {
     console.warn(status);
     setStatus("");
     Keyboard.dismiss();
+    navigation.goBack();
   };
 
   return (
