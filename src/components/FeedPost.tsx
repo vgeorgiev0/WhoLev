@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import like from "../../assets/images/like.png";
 import {
   Entypo,
@@ -7,16 +7,22 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import IconButton from "./IconButton";
+import { useNavigation } from "@react-navigation/native";
 
 interface FeedPostProps {
   post: Post;
 }
 
 const FeedPost: React.FC<FeedPostProps> = ({ post }) => {
+  const navigation = useNavigation();
+  const navigateToProfile = () => {
+    // @ts-ignore
+    navigation.navigate("Profile");
+  };
   return (
     <View style={styles.post}>
       {/* Header */}
-      <View style={styles.header}>
+      <TouchableOpacity onPress={navigateToProfile} style={styles.header}>
         <Image source={{ uri: post.User.image }} style={styles.profileImage} />
         <View>
           <Text style={styles.name}>{post.User.name}</Text>
@@ -28,7 +34,7 @@ const FeedPost: React.FC<FeedPostProps> = ({ post }) => {
           color="gray"
           style={styles.icon}
         />
-      </View>
+      </TouchableOpacity>
       {/* Body */}
       {post.description && (
         <Text style={styles.description}>{post.description}</Text>

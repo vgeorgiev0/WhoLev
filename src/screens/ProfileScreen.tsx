@@ -41,6 +41,10 @@ const ProfileScreenHeader = ({
   if (!user) {
     return <ActivityIndicator />;
   }
+  const editProfile = () => {
+    // @ts-ignore
+    navigation.navigate("Edit Profile");
+  };
 
   return (
     <View style={styles.container}>
@@ -60,7 +64,7 @@ const ProfileScreenHeader = ({
                 Add to Story
               </Text>
             </Pressable>
-            <Pressable style={styles.button}>
+            <Pressable style={styles.button} onPress={editProfile}>
               <MaterialCommunityIcons name="pencil" size={16} color="black" />
               <Text style={styles.buttonText}>Edit Profile</Text>
             </Pressable>
