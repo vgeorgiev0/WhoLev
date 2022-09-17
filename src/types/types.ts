@@ -7,7 +7,7 @@ type Post = {
     name: string;
   };
   description: string;
-  image: string;
+  image?: string;
   numberOfLikes: number;
   numberOfShares: number;
 }
