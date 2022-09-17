@@ -1,10 +1,10 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import postsData from "../../assets/data/posts.json";
 import FeedPost from "../components/FeedPost";
 
-type Props = {};
+interface FeedScreenProps {}
 
-const FeedScreen = (props: Props) => {
+const FeedScreen: React.FC<FeedScreenProps> = () => {
   return (
     <View>
       <FlatList
