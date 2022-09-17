@@ -7,7 +7,8 @@ import CreatePostScreen from "./src/screens/CreatePostScreen";
 export default function App() {
   return (
     <View style={styles.container}>
-      <CreatePostScreen />
+      <FeedScreen />
+      {/* <CreatePostScreen /> */}
 
       <StatusBar style="auto" />
     </View>

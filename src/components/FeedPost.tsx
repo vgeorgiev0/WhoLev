@@ -39,12 +39,7 @@ const FeedPost: React.FC<FeedPostProps> = ({ post }) => {
       {/* Footer */}
       <View style={styles.footer}>
         <View style={styles.statsRow}>
-          <AntDesign
-            style={styles.likeIcon}
-            name="like2"
-            size={24}
-            color="blue"
-          />
+          <Image source={like} style={styles.likeIcon} />
           <Text style={styles.likedBy}>
             Pesho and {post.numberOfLikes} others
           </Text>
@@ -115,7 +110,9 @@ const styles = StyleSheet.create({
     borderColor: "lightgray",
   },
   likeIcon: {
-    marginRight: 10,
+    marginRight: 5,
+    width: 20,
+    height: 20,
   },
   likedBy: {
     color: "grey",
