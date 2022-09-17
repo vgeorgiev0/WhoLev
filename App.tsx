@@ -1,8 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
-import { Entypo } from "@expo/vector-icons";
-// import LikeButton from "../assets/images/like.png";
-import { AntDesign } from "@expo/vector-icons";
+import {
+  Entypo,
+  AntDesign,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 const post = {
   id: "p1",
   createdAt: "19 m",
@@ -17,6 +20,15 @@ const post = {
   image: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
   numberOfLikes: 11,
   numberOfShares: 2,
+};
+
+const IconButton = (text: string) => {
+  return (
+    <View style={styles.iconButton}>
+      <AntDesign style={styles.likeIcon} name="like2" size={18} color="grey" />
+      <Text style={styles.iconBUttonText}>{text}</Text>
+    </View>
+  );
 };
 
 export default function App() {
@@ -62,6 +74,35 @@ export default function App() {
             <Text style={styles.numberOfShares}>
               {post.numberOfShares} shares
             </Text>
+          </View>
+          <View style={styles.buttonsRow}>
+            <View style={styles.iconButton}>
+              <AntDesign
+                style={styles.likeIcon}
+                name="like2"
+                size={18}
+                color="grey"
+              />
+              <Text style={styles.iconBUttonText}>Like</Text>
+            </View>
+            <View style={styles.iconButton}>
+              <FontAwesome5
+                style={styles.likeIcon}
+                name="comment-alt"
+                size={18}
+                color="grey"
+              />
+              <Text style={styles.iconBUttonText}>Comment</Text>
+            </View>
+            <View style={styles.iconButton}>
+              <MaterialCommunityIcons
+                style={styles.likeIcon}
+                name="share-outline"
+                size={18}
+                color="grey"
+              />
+              <Text style={styles.iconBUttonText}>Share</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -129,5 +170,18 @@ const styles = StyleSheet.create({
   numberOfShares: {
     marginLeft: "auto",
     color: "grey",
+  },
+  buttonsRow: {
+    marginVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  iconButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  iconBUttonText: {
+    color: "grey",
+    marginLeft: 5,
   },
 });
