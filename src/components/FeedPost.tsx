@@ -72,7 +72,7 @@ const FeedPost: React.FC<FeedPostProps> = ({ post }) => {
 const styles = StyleSheet.create({
   post: {
     width: "100%",
-    marginVertical: 20,
+    marginVertical: 10,
     backgroundColor: "#fff",
   },
   header: {
