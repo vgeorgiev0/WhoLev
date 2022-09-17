@@ -1,6 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Entypo } from "@expo/vector-icons";
+// import LikeButton from "../assets/images/like.png";
+import { AntDesign } from "@expo/vector-icons";
 const post = {
   id: "p1",
   createdAt: "19 m",
@@ -46,7 +48,22 @@ export default function App() {
           <Image source={{ uri: post.image }} style={styles.image} />
         )}
         {/* Footer */}
-        <View style={styles.footer}></View>
+        <View style={styles.footer}>
+          <View style={styles.statsRow}>
+            <AntDesign
+              style={styles.likeIcon}
+              name="like2"
+              size={24}
+              color="blue"
+            />
+            <Text style={styles.likedBy}>
+              Pesho and {post.numberOfLikes} others
+            </Text>
+            <Text style={styles.numberOfShares}>
+              {post.numberOfShares} shares
+            </Text>
+          </View>
+        </View>
       </View>
       <StatusBar style="auto" />
     </View>
@@ -94,5 +111,23 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     marginTop: 10,
   },
-  footer: {},
+  footer: {
+    paddingHorizontal: 10,
+  },
+  statsRow: {
+    paddingVertical: 10,
+    flexDirection: "row",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: "lightgray",
+  },
+  likeIcon: {
+    marginRight: 10,
+  },
+  likedBy: {
+    color: "grey",
+  },
+  numberOfShares: {
+    marginLeft: "auto",
+    color: "grey",
+  },
 });
