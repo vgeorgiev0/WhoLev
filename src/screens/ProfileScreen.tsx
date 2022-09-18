@@ -1,12 +1,10 @@
-import { Text, StyleSheet, Dimensions, FlatList } from "react-native";
+import { Text, StyleSheet, FlatList } from "react-native";
 
 import FeedPost from "../components/FeedPost";
 
 import user from "../../assets/data/user.json";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import ProfileScreenHeader from "../components/ProfileScreenHeader";
-
-const profilePictureWidth = Dimensions.get("window").width * 0.4;
 
 type Props = NativeStackScreenProps<RootStackParamList, "Profile">;
 

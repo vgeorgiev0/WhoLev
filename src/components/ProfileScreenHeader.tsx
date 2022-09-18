@@ -14,6 +14,7 @@ import {
   Ionicons,
   Entypo,
 } from "@expo/vector-icons";
+import { Auth } from "aws-amplify";
 
 const dummy_img =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
@@ -33,7 +34,7 @@ const ProfileScreenHeader: React.FC<ProfileScreenHeaderProps> = ({
   navigation,
 }) => {
   const signOut = async () => {
-    console.warn("Sign out");
+    await Auth.signOut();
   };
 
   if (!user) {
@@ -41,7 +42,7 @@ const ProfileScreenHeader: React.FC<ProfileScreenHeaderProps> = ({
   }
 
   const editProfile = () => {
-    navigation && navigation.navigation.navigate("EditProfile");
+    navigation && navigation.navigate("EditProfile");
   };
 
   return (

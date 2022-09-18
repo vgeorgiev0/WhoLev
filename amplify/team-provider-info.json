@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-wholev-staging-73012-authRole",
+      "UnauthRoleArn": "arn:aws:iam::261751388295:role/amplify-wholev-staging-73012-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::261751388295:role/amplify-wholev-staging-73012-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-wholev-staging-73012-deployment",
+      "UnauthRoleName": "amplify-wholev-staging-73012-unauthRole",
+      "StackName": "amplify-wholev-staging-73012",
+      "StackId": "arn:aws:cloudformation:eu-central-1:261751388295:stack/amplify-wholev-staging-73012/bbcb0160-3723-11ed-8367-06fe6824f748",
+      "AmplifyAppId": "d37vk9ikj0v7qo"
+    },
+    "categories": {
+      "auth": {
+        "WhoLev": {}
+      }
+    }
+  }
+}
