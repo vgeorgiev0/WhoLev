@@ -42,7 +42,7 @@ const ProfileScreenHeader: React.FC<ProfileScreenHeaderProps> = ({
   }
 
   const editProfile = () => {
-    navigation && navigation.navigate("EditProfile");
+    navigation.navigate("EditProfile");
   };
 
   return (

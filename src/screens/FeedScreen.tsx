@@ -9,18 +9,16 @@ import {
 import postsData from "../../assets/data/posts.json";
 import FeedPost from "../components/FeedPost";
 import { Entypo } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-interface FeedScreenProps {}
+type Props = NativeStackScreenProps<RootStackParamList, "Feed">;
+
 const image =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
 
-const FeedScreen: React.FC<FeedScreenProps> = () => {
-  const navigation = useNavigation();
-
+const FeedScreen = ({ navigation, route }: Props) => {
   const createPost = () => {
-    // @ts-ignore
-    navigation.navigate("Create Post");
+    navigation.navigate("CreatePost");
   };
 
   return (
@@ -39,7 +37,9 @@ const FeedScreen: React.FC<FeedScreenProps> = () => {
           </Pressable>
         )}
         data={postsData}
-        renderItem={({ item }) => <FeedPost post={item} />}
+        renderItem={({ item }) => (
+          <FeedPost post={item} navigation={navigation} />
+        )}
       />
     </View>
   );

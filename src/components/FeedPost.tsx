@@ -7,16 +7,14 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import IconButton from "./IconButton";
-import { useNavigation } from "@react-navigation/native";
 
 interface FeedPostProps {
   post: Post;
+  navigation: any;
 }
 
-const FeedPost: React.FC<FeedPostProps> = ({ post }) => {
-  const navigation = useNavigation();
+const FeedPost: React.FC<FeedPostProps> = ({ post, navigation }) => {
   const navigateToProfile = () => {
-    // @ts-ignore
     navigation.navigate("Profile");
   };
   return (

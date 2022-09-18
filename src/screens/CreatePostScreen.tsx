@@ -12,6 +12,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const user = {
   id: "u1",
@@ -20,11 +21,9 @@ const user = {
   name: "Vadim Savin",
 };
 
-interface CreatePostScreenProps {}
+type Props = NativeStackScreenProps<RootStackParamList, "CreatePost">;
 
-const CreatePostScreen: React.FC<CreatePostScreenProps> = () => {
-  const navigation = useNavigation();
-
+const CreatePostScreen = ({ navigation, route }: Props) => {
   const [status, setStatus] = useState("");
   const [image, setImage] = useState<string>();
 

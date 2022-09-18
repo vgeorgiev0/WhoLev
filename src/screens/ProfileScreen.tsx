@@ -14,7 +14,9 @@ const ProfileScreen = ({ navigation, route }: Props) => {
   return (
     <FlatList
       data={user.posts}
-      renderItem={({ item }) => <FeedPost post={item} />}
+      renderItem={({ item }) => (
+        <FeedPost post={item} navigation={navigation} />
+      )}
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={() => (
         <>
