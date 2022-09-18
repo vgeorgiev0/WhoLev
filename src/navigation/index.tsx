@@ -5,7 +5,7 @@ import CreatePostScreen from "../screens/CreatePostScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import UpdateProfileScreen from "../screens/UpdateProfileScreen";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   return (
@@ -16,9 +16,9 @@ const Navigator = () => {
           component={FeedScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Create Post" component={CreatePostScreen} />
+        <Stack.Screen name="CreatePost" component={CreatePostScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Edit Profile" component={UpdateProfileScreen} />
+        <Stack.Screen name="EditProfile" component={UpdateProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
