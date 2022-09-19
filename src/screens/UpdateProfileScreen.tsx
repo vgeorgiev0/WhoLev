@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,9 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
-import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { API, Auth, DataStore, graphqlOperation } from 'aws-amplify';
+import { User } from '../models';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 
 const createUser = `
@@ -33,10 +35,27 @@ const createUser = `
 const dummy_img =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
 
-const UpdateProfileScreen = () => {
+
+type Props = NativeStackScreenProps<RootStackParamList, "EditProfile">;
+
+const UpdateProfileScreen = ({ navigation, route }: Props) => {
   const [name, setName] = useState("");
   const [image, setImage] = useState<string>();
+  const [user, setUser] = useState<User>()
   const insets = useSafeAreaInsets();
+
+
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const authenticatedUser = await Auth.currentAuthenticatedUser()
+      const dbUser = await DataStore.query(User, authenticatedUser.attributes.sub)
+      setUser(dbUser)
+      dbUser && setName(dbUser.name)
+    }
+    fetchUser()
+  }, [])
+
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -52,10 +71,14 @@ const UpdateProfileScreen = () => {
       setImage(result.uri);
     }
   };
+  const updateUser = async () => {
+    user && await DataStore.save(User.copyOf(user, (update) => {
+      update.name = name
+    }))
+  }
 
-  const onSave = async () => {
+  const createUser = async () => {
     const authenticatedUser = await Auth.currentAuthenticatedUser()
-
     const newUser = {
       id: authenticatedUser.attributes.sub,
       name,
@@ -63,6 +86,15 @@ const UpdateProfileScreen = () => {
     }
     await API.graphql(graphqlOperation(createUser, { input: newUser }))
     console.warn("Saving the user profile");
+  }
+
+  const onSave = async () => {
+    if (user) {
+      await updateUser()
+    } else {
+      await createUser()
+    }
+    navigation.goBack()
   };
 
   return (
@@ -73,7 +105,7 @@ const UpdateProfileScreen = () => {
       keyboardVerticalOffset={150}
     >
       <Pressable onPress={pickImage} style={styles.imagePickerContainer}>
-        <Image source={{ uri: image || dummy_img }} style={styles.image} />
+        <Image source={{ uri: image || user?.image || dummy_img }} style={styles.image} />
         <Text>Change photo</Text>
       </Pressable>
 
