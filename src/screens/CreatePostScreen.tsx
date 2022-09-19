@@ -14,7 +14,9 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Auth } from 'aws-amplify';
+import { Auth, Storage } from 'aws-amplify';
+import 'react-native-get-random-values'
+import { v4 } from 'uuid';
 
 const user = {
   id: "u1",
@@ -44,20 +46,35 @@ const CreatePostScreen = ({ navigation, route }: Props) => {
       setImage(result.uri);
     }
   };
+  const uploadFile = async (fileUri: string) => {
+    try {
+      const response = await fetch(fileUri);
+      const blob = await response.blob();
+      const key = `${v4()}.png`;
+      await Storage.put(key, blob, {
+        contentType: "image/png", // contentType is optional
+      });
+      return key;
+    } catch (err) {
+      console.log("Error uploading file:", err);
+    }
+  }
+
   const handlePost = async () => {
     const authenticatedUser = await Auth.currentAuthenticatedUser()
+    const newPost: any = {
+      description: description,
+      numberOfLikes: 102,
+      numberOfShares: 10,
+      postUserId: authenticatedUser.attributes.sub,
+    }
+    if (image) {
+      newPost.image = await uploadFile(image)
+    }
 
-    await DataStore.save(
-      new Post({
-        description: description,
-        // "image": "Lorem ipsum dolor sit amet",
-        numberOfLikes: 102,
-        numberOfShares: 10,
-        postUserId: authenticatedUser.attributes.sub,
-      })
-    );
+    await DataStore.save(new Post(newPost))
+
     Keyboard.dismiss();
-    console.warn(description);
     setDescription("");
     setImage(null);
     navigation.goBack();

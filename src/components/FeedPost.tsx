@@ -9,6 +9,11 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import IconButton from "./IconButton";
+// @ts-ignore
+import { S3Image } from "aws-amplify-react-native";
+
+const dummy_img =
+  "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
 
 interface FeedPostProps {
   post: Post;
@@ -23,8 +28,12 @@ const FeedPost: React.FC<FeedPostProps> = ({ post, navigation }) => {
     <View style={styles.post}>
       {/* Header */}
       <TouchableOpacity onPress={navigateToProfile} style={styles.header}>
-        {/* @ts-ignore */}
-        <Image source={{ uri: post.User?.image }} style={styles.profileImage} />
+        {post.User?.image ? (
+          <S3Image imgKey={post.User.image} style={styles.profileImage} />
+        ) : (
+          <Image source={{ uri: dummy_img }} style={styles.profileImage} />
+        )}
+
         <View>
           {/* @ts-ignore */}
           <Text style={styles.name}>{post.User?.name}</Text>
@@ -42,7 +51,7 @@ const FeedPost: React.FC<FeedPostProps> = ({ post, navigation }) => {
         <Text style={styles.description}>{post.description}</Text>
       )}
       {post.image && (
-        <Image source={{ uri: post.image }} style={styles.image} />
+        <S3Image imgKey={post.image} style={styles.image} resizeMode="cover" />
       )}
       {/* Footer */}
       <View style={styles.footer}>

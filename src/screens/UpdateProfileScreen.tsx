@@ -12,9 +12,10 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
-import { API, Auth, DataStore, graphqlOperation } from 'aws-amplify';
+import { API, Auth, DataStore, graphqlOperation, Storage } from 'aws-amplify';
 import { User } from '../models';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { v4 } from 'uuid';
 
 
 const createUser = `
@@ -72,17 +73,41 @@ const UpdateProfileScreen = ({ navigation, route }: Props) => {
     }
   };
   const updateUser = async () => {
-    user && await DataStore.save(User.copyOf(user, (update) => {
-      update.name = name
+    let imgKey: string | undefined
+    if (image) {
+      imgKey = await uploadFile(image);
+    }
+    user && await DataStore.save(User.copyOf(user, (updated) => {
+      updated.name = name;
+      if (imgKey) {
+        updated.image = imgKey
+      }
     }))
   }
 
-  const createUser = async () => {
+  const uploadFile = async (fileUri: string) => {
+    try {
+      const response = await fetch(fileUri);
+      const blob = await response.blob();
+      const key = `${v4()}.png`;
+      await Storage.put(key, blob, {
+        contentType: "image/png", // contentType is optional
+      });
+      return key;
+    } catch (err) {
+      console.log("Error uploading file:", err);
+    }
+  }
+
+  const createUserAsync = async () => {
     const authenticatedUser = await Auth.currentAuthenticatedUser()
-    const newUser = {
+    const newUser: any = {
       id: authenticatedUser.attributes.sub,
       name,
       _version: 1
+    }
+    if (image) {
+      newUser.image = await uploadFile(image);
     }
     await API.graphql(graphqlOperation(createUser, { input: newUser }))
     console.warn("Saving the user profile");
@@ -92,7 +117,7 @@ const UpdateProfileScreen = ({ navigation, route }: Props) => {
     if (user) {
       await updateUser()
     } else {
-      await createUser()
+      await createUserAsync()
     }
     navigation.goBack()
   };

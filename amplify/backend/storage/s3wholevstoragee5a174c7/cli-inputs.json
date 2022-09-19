@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3wholevstoragee5a174c7",
+  "bucketName": "wholev-storage-e5a174c7",
+  "policyUUID": "ebe05c3c",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}
