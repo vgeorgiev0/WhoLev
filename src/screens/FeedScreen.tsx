@@ -10,6 +10,9 @@ import postsData from "../../assets/data/posts.json";
 import FeedPost from "../components/FeedPost";
 import { Entypo } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useEffect, useState } from 'react';
+import { DataStore } from 'aws-amplify';
+import { Post } from '../models';
 
 type Props = NativeStackScreenProps<RootStackParamList, "Feed">;
 
@@ -17,9 +20,16 @@ const image =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
 
 const FeedScreen = ({ navigation, route }: Props) => {
+  const [post, setPost] = useState<Post[]>([])
+
+  useEffect(() => {
+    DataStore.query(Post).then(setPost);
+  }, []);
+
   const createPost = () => {
     navigation.navigate("CreatePost");
   };
+
 
   return (
     <View>
@@ -36,7 +46,7 @@ const FeedScreen = ({ navigation, route }: Props) => {
             />
           </Pressable>
         )}
-        data={postsData}
+        data={post}
         renderItem={({ item }) => (
           <FeedPost post={item} navigation={navigation} />
         )}
@@ -50,8 +60,8 @@ export default FeedScreen;
 const styles = StyleSheet.create({
   header: {
     padding: 10,
-    marginTop: 30,
-    paddingVertical: 15,
+    marginTop: 40,
+    paddingVertical: 20,
     flexDirection: "row",
     alignItems: "center",
     width: "100%",

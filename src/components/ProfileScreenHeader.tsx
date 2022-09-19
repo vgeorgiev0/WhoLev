@@ -15,6 +15,7 @@ import {
   Entypo,
 } from "@expo/vector-icons";
 import { Auth } from "aws-amplify";
+import { User } from '../models';
 
 const dummy_img =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
@@ -23,7 +24,7 @@ const bg = "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg";
 const profilePictureWidth = Dimensions.get("window").width * 0.4;
 
 interface ProfileScreenHeaderProps {
-  user: User;
+  user: User | undefined;
   isMe: boolean;
   navigation: any;
 }

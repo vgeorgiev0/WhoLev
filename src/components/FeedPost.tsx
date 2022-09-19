@@ -1,3 +1,5 @@
+
+import { Post } from "../models";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import like from "../../assets/images/like.png";
 import {
@@ -15,15 +17,17 @@ interface FeedPostProps {
 
 const FeedPost: React.FC<FeedPostProps> = ({ post, navigation }) => {
   const navigateToProfile = () => {
-    navigation.navigate("Profile");
+    navigation.navigate("Profile", { id: post.postUserId });
   };
   return (
     <View style={styles.post}>
       {/* Header */}
       <TouchableOpacity onPress={navigateToProfile} style={styles.header}>
-        <Image source={{ uri: post.User.image }} style={styles.profileImage} />
+        {/* @ts-ignore */}
+        <Image source={{ uri: post.User?.image }} style={styles.profileImage} />
         <View>
-          <Text style={styles.name}>{post.User.name}</Text>
+          {/* @ts-ignore */}
+          <Text style={styles.name}>{post.User?.name}</Text>
           <Text style={styles.subtitle}>{post.createdAt}</Text>
         </View>
         <Entypo

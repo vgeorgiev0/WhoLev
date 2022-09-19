@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { DataStore } from "@aws-amplify/datastore";
+import { Post } from "../models";
 import {
   Image,
   StyleSheet,
@@ -11,8 +13,8 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Auth } from 'aws-amplify';
 
 const user = {
   id: "u1",
@@ -24,8 +26,9 @@ const user = {
 type Props = NativeStackScreenProps<RootStackParamList, "CreatePost">;
 
 const CreatePostScreen = ({ navigation, route }: Props) => {
-  const [status, setStatus] = useState("");
-  const [image, setImage] = useState<string>();
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState<string | null>(null);
+
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -41,11 +44,22 @@ const CreatePostScreen = ({ navigation, route }: Props) => {
       setImage(result.uri);
     }
   };
+  const handlePost = async () => {
+    const authenticatedUser = await Auth.currentAuthenticatedUser()
 
-  const handleSubmit = () => {
-    console.warn(status);
-    setStatus("");
+    await DataStore.save(
+      new Post({
+        description: description,
+        // "image": "Lorem ipsum dolor sit amet",
+        numberOfLikes: 102,
+        numberOfShares: 10,
+        postUserId: authenticatedUser.attributes.sub,
+      })
+    );
     Keyboard.dismiss();
+    console.warn(description);
+    setDescription("");
+    setImage(null);
     navigation.goBack();
   };
 
@@ -63,16 +77,16 @@ const CreatePostScreen = ({ navigation, route }: Props) => {
         />
       </View>
       <TextInput
-        value={status}
-        onChangeText={setStatus}
+        value={description}
+        onChangeText={setDescription}
         style={styles.input}
         placeholder="What is on your mind"
         multiline
       />
 
-      <Image source={{ uri: image }} style={styles.postImage} />
-
-      <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
+      {image && <Image source={{ uri: image }} style={styles.postImage} />
+      }
+      <TouchableOpacity style={styles.buttonContainer} onPress={handlePost}>
         <Text style={styles.buttonText}>Post</Text>
         <MaterialCommunityIcons
           style={styles.buttonIcon}
