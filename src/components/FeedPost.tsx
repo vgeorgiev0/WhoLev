@@ -1,5 +1,5 @@
 
-import { Post } from "../models";
+import { Post, User } from "../models";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import like from "../../assets/images/like.png";
 import {
@@ -11,16 +11,26 @@ import {
 import IconButton from "./IconButton";
 // @ts-ignore
 import { S3Image } from "aws-amplify-react-native";
+import { useEffect, useState } from 'react';
+import { DataStore } from 'aws-amplify';
 
 const dummy_img =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
 
 interface FeedPostProps {
-  post: Post;
+  post: any;
   navigation: any;
 }
 
 const FeedPost: React.FC<FeedPostProps> = ({ post, navigation }) => {
+  const [isLiked, setIsLiked] = useState(false)
+  const [user, setUser] = useState<User>()
+
+  useEffect(() => {
+    DataStore.query(User, post.postUserId).then(setUser)
+  }, [])
+
+
   const navigateToProfile = () => {
     navigation.navigate("Profile", { id: post.postUserId });
   };
@@ -28,15 +38,15 @@ const FeedPost: React.FC<FeedPostProps> = ({ post, navigation }) => {
     <View style={styles.post}>
       {/* Header */}
       <TouchableOpacity onPress={navigateToProfile} style={styles.header}>
-        {post.User?.image ? (
-          <S3Image imgKey={post.User.image} style={styles.profileImage} />
+        {user?.image ? (
+          <S3Image imgKey={user.image} style={styles.profileImage} />
         ) : (
           <Image source={{ uri: dummy_img }} style={styles.profileImage} />
         )}
 
         <View>
           {/* @ts-ignore */}
-          <Text style={styles.name}>{post.User?.name}</Text>
+          <Text style={styles.name}>{user?.name}</Text>
           <Text style={styles.subtitle}>{post.createdAt}</Text>
         </View>
         <Entypo

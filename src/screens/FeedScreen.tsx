@@ -11,7 +11,7 @@ import FeedPost from "../components/FeedPost";
 import { Entypo } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from 'react';
-import { DataStore } from 'aws-amplify';
+import { DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { Post } from '../models';
 
 type Props = NativeStackScreenProps<RootStackParamList, "Feed">;
@@ -20,10 +20,14 @@ const image =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
 
 const FeedScreen = ({ navigation, route }: Props) => {
-  const [post, setPost] = useState<Post[]>([])
+  const [posts, setPosts] = useState<Post[]>([])
 
   useEffect(() => {
-    DataStore.query(Post).then(setPost);
+    const subscription = DataStore.observeQuery(Post, Predicates.ALL, {
+      sort: (s) => s.createdAt(SortDirection.DESCENDING),
+    }).subscribe(({ items }) => setPosts(items));
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const createPost = () => {
@@ -46,7 +50,7 @@ const FeedScreen = ({ navigation, route }: Props) => {
             />
           </Pressable>
         )}
-        data={post}
+        data={posts}
         renderItem={({ item }) => (
           <FeedPost post={item} navigation={navigation} />
         )}

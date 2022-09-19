@@ -16,6 +16,8 @@ import { API, Auth, DataStore, graphqlOperation, Storage } from 'aws-amplify';
 import { User } from '../models';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { v4 } from 'uuid';
+// @ts-ignore
+import { S3Image } from "aws-amplify-react-native";
 
 
 const createUser = `
@@ -62,7 +64,7 @@ const UpdateProfileScreen = ({ navigation, route }: Props) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
     });
 
@@ -122,6 +124,15 @@ const UpdateProfileScreen = ({ navigation, route }: Props) => {
     navigation.goBack()
   };
 
+
+  let renderImage = <Image source={{ uri: dummy_img }} style={styles.image} />;
+  if (image) {
+    renderImage = <Image source={{ uri: image }} style={styles.image} />;
+  } else if (user?.image) {
+    renderImage = <S3Image imgKey={user.image} style={styles.image} />;
+  }
+
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -130,7 +141,7 @@ const UpdateProfileScreen = ({ navigation, route }: Props) => {
       keyboardVerticalOffset={150}
     >
       <Pressable onPress={pickImage} style={styles.imagePickerContainer}>
-        <Image source={{ uri: image || user?.image || dummy_img }} style={styles.image} />
+        {renderImage}
         <Text>Change photo</Text>
       </Pressable>
 
