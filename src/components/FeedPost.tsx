@@ -34,6 +34,7 @@ const FeedPost: React.FC<FeedPostProps> = ({ post, navigation }) => {
   const navigateToProfile = () => {
     navigation.navigate("Profile", { id: post.postUserId });
   };
+
   return (
     <View style={styles.post}>
       {/* Header */}

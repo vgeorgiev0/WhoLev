@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DataStore } from "@aws-amplify/datastore";
 import { Post } from "../models";
 import {
@@ -17,19 +17,29 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Auth, Storage } from 'aws-amplify';
 import 'react-native-get-random-values'
 import { v4 } from 'uuid';
+import { User } from '../models';
+// @ts-ignore
+import { S3Image } from "aws-amplify-react-native";
 
-const user = {
-  id: "u1",
-  image:
-    "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg",
-  name: "Vadim Savin",
-};
+
+const dummy_img =
+  "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
 
 type Props = NativeStackScreenProps<RootStackParamList, "CreatePost">;
 
 const CreatePostScreen = ({ navigation, route }: Props) => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState<string | null>(null);
+  const [user, setUser] = useState<User>()
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const authenticatedUser = await Auth.currentAuthenticatedUser()
+      const dbUser = await DataStore.query(User, authenticatedUser.attributes.sub)
+      setUser(dbUser)
+    }
+    fetchUser()
+  }, [])
 
 
   const pickImage = async () => {
@@ -83,8 +93,8 @@ const CreatePostScreen = ({ navigation, route }: Props) => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.header}>
-        <Image source={{ uri: user.image }} style={styles.profileImage} />
-        <Text style={styles.name}>{user.name}</Text>
+        {user ? <S3Image imgKey={user.image} style={styles.profileImage} /> : <Image source={{ uri: dummy_img }} style={styles.profileImage} />}
+        {user ? <Text style={styles.name}>{user.name}</Text> : <Text>No user Found</Text>}
         <Entypo
           onPress={pickImage}
           name="images"
