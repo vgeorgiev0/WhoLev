@@ -16,9 +16,9 @@ const Navigator = () => {
           component={FeedScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="CreatePost" component={CreatePostScreen} />
+        <Stack.Screen name="CreatePost" component={CreatePostScreen} options={{ title: 'Create a post' }} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="EditProfile" component={UpdateProfileScreen} />
+        <Stack.Screen name="EditProfile" component={UpdateProfileScreen} options={{ title: 'Edit your profile' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
