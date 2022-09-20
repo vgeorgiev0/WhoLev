@@ -1,5 +1,5 @@
 
-import { Post, User } from "../models";
+import { User } from "../models";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import like from "../../assets/images/like.png";
 import {

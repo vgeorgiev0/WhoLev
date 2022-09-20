@@ -8,25 +8,27 @@ import { useEffect, useState } from 'react';
 import { Auth, DataStore } from 'aws-amplify';
 import { User } from '../models';
 import { Post } from '../models';
+import { subAtom } from '../state/user';
+import { useRecoilValue } from 'recoil';
 
 type Props = NativeStackScreenProps<RootStackParamList, "Profile">;
 
 const ProfileScreen = ({ navigation, route }: Props) => {
   const [user, setUser] = useState<User>()
   const [posts, setPosts] = useState<Post[]>([])
+  const sub = useRecoilValue(subAtom)
 
+
+  const userId = route?.params?.id || sub
+  const isMe = userId === sub
 
   useEffect(() => {
 
     const fetchUser = async () => {
-      const authenticatedUser = await Auth.currentAuthenticatedUser()
-      const userId = route?.params?.id || authenticatedUser.attributes.sub
 
       if (!userId) {
         return
       }
-      const isMe = userId === authenticatedUser.attributes.sub
-
 
       const dbUser = await DataStore.query(User, userId)
       if (!dbUser) {
@@ -36,8 +38,6 @@ const ProfileScreen = ({ navigation, route }: Props) => {
           Alert.alert('User not found')
         }
       } else { setUser(dbUser) }
-
-
       DataStore.query(Post, (p) => p.postUserId('eq', userId)).then(setPosts);
     }
     fetchUser()
@@ -56,10 +56,9 @@ const ProfileScreen = ({ navigation, route }: Props) => {
         <>
           <ProfileScreenHeader
             user={user}
-            isMe={true}
+            isMe={isMe}
             navigation={navigation}
           />
-          <Text style={styles.sectionTitle}>Posts</Text>
         </>
       )}
     />
@@ -67,12 +66,6 @@ const ProfileScreen = ({ navigation, route }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  sectionTitle: {
-    marginLeft: 10,
-    marginVertical: 5,
-    fontWeight: "500",
-    fontSize: 18,
-  },
 });
 
 export default ProfileScreen;

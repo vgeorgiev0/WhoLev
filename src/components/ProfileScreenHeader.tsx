@@ -83,7 +83,7 @@ const ProfileScreenHeader: React.FC<ProfileScreenHeaderProps> = ({
         </>
       )}
 
-      <View style={styles.textLine}>
+      {/* <View style={styles.textLine}>
         <Entypo
           name="graduation-cap"
           size={18}
@@ -106,7 +106,7 @@ const ProfileScreenHeader: React.FC<ProfileScreenHeaderProps> = ({
           style={{ width: 25 }}
         />
         <Text>From Tenerife</Text>
-      </View>
+      </View> */}
     </View>
   );
 };

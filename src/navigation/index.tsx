@@ -6,11 +6,13 @@ import CreatePostScreen from "../screens/CreatePostScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import UpdateProfileScreen from "../screens/UpdateProfileScreen";
 import FirstEditProfile from "../screens/FirstEditProfileScreen";
-import { RecoilRoot } from 'recoil';
-import { Auth, DataStore } from 'aws-amplify';
+import { RecoilRoot, useSetRecoilState } from 'recoil';
+import { Auth, DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { User } from '../models';
 import { useRecoilState } from 'recoil'
 import { dbUserAtom, subAtom } from '../state/user';
+import { postsAtom } from '../state/posts';
+import { Post } from '../models';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -18,6 +20,15 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigator = () => {
   const [sub, setSub] = useRecoilState(subAtom);
   const [user, setUser] = useRecoilState(dbUserAtom);
+  const setPosts = useSetRecoilState(postsAtom)
+
+  useEffect(() => {
+    const subscription = DataStore.observeQuery(Post, Predicates.ALL, {
+      sort: (s) => s.createdAt(SortDirection.DESCENDING),
+    }).subscribe(({ items }) => setPosts(items));
+
+    return () => subscription.unsubscribe();
+  }, []);
 
 
   const fetchUser = async () => {

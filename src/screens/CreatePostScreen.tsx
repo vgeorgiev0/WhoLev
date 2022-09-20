@@ -20,6 +20,8 @@ import { v4 } from 'uuid';
 import { User } from '../models';
 // @ts-ignore
 import { S3Image } from "aws-amplify-react-native";
+import { useRecoilValue } from 'recoil';
+import { dbUserAtom, subAtom } from '../state/user';
 
 
 const dummy_img =
@@ -30,16 +32,9 @@ type Props = NativeStackScreenProps<RootStackParamList, "CreatePost">;
 const CreatePostScreen = ({ navigation, route }: Props) => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState<string | null>(null);
-  const [user, setUser] = useState<User>()
+  const user = useRecoilValue(dbUserAtom)
+  const sub = useRecoilValue(subAtom)
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const authenticatedUser = await Auth.currentAuthenticatedUser()
-      const dbUser = await DataStore.query(User, authenticatedUser.attributes.sub)
-      setUser(dbUser)
-    }
-    fetchUser()
-  }, [])
 
 
   const pickImage = async () => {
@@ -71,12 +66,11 @@ const CreatePostScreen = ({ navigation, route }: Props) => {
   }
 
   const handlePost = async () => {
-    const authenticatedUser = await Auth.currentAuthenticatedUser()
     const newPost: any = {
       description: description,
       numberOfLikes: 102,
       numberOfShares: 10,
-      postUserId: authenticatedUser.attributes.sub,
+      postUserId: sub,
     }
     if (image) {
       newPost.image = await uploadFile(image)

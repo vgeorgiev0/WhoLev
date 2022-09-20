@@ -18,6 +18,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { v4 } from 'uuid';
 // @ts-ignore
 import { S3Image } from "aws-amplify-react-native";
+import { useRecoilValue } from 'recoil';
+import { dbUserAtom, subAtom } from '../state/user';
 
 
 const createUser = `
@@ -44,19 +46,13 @@ type Props = NativeStackScreenProps<RootStackParamList, "EditProfile">;
 const UpdateProfileScreen = ({ navigation, route }: Props) => {
   const [name, setName] = useState("");
   const [image, setImage] = useState<string>();
-  const [user, setUser] = useState<User>()
+  const user = useRecoilValue(dbUserAtom)
+  const sub = useRecoilValue(subAtom)
   const insets = useSafeAreaInsets();
 
 
-
   useEffect(() => {
-    const fetchUser = async () => {
-      const authenticatedUser = await Auth.currentAuthenticatedUser()
-      const dbUser = await DataStore.query(User, authenticatedUser.attributes.sub)
-      setUser(dbUser)
-      dbUser && setName(dbUser.name)
-    }
-    fetchUser()
+    user && setName(user.name)
   }, [])
 
 
@@ -102,9 +98,8 @@ const UpdateProfileScreen = ({ navigation, route }: Props) => {
   }
 
   const createUserAsync = async () => {
-    const authenticatedUser = await Auth.currentAuthenticatedUser()
     const newUser: any = {
-      id: authenticatedUser.attributes.sub,
+      id: sub,
       name,
       _version: 1
     }
