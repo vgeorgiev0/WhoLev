@@ -5,6 +5,7 @@ import Navigator from "./src/navigation/index";
 import { Amplify, Auth } from "aws-amplify";
 import awsconfig from "./src/aws-exports";
 import { withAuthenticator } from "aws-amplify-react-native";
+import { RecoilRoot } from 'recoil';
 
 Amplify.configure({
   ...awsconfig,
@@ -22,10 +23,12 @@ const App = () => {
 
   console.log(authUser);
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <Navigator />
-    </View>
+    <RecoilRoot>
+      <View style={styles.container}>
+        <StatusBar style="auto" />
+        <Navigator />
+      </View>
+    </RecoilRoot>
   );
 };
 

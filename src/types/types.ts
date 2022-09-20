@@ -3,6 +3,7 @@ type RootStackParamList = {
   EditProfile: undefined;
   CreatePost: undefined;
   Profile: { id: string };
+  FirstEditProfile: undefined;
 }
 interface Post {
   id: string;

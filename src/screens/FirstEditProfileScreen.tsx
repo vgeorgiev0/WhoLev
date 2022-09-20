@@ -39,7 +39,7 @@ const dummy_img =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
 
 
-type Props = NativeStackScreenProps<RootStackParamList, "EditProfile">;
+type Props = NativeStackScreenProps<RootStackParamList, "FirstEditProfile">;
 
 const UpdateProfileScreen = ({ navigation, route }: Props) => {
   const [name, setName] = useState("");
