@@ -41,7 +41,7 @@ const CreatePostScreen = ({ navigation, route }: Props) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
     });
 
@@ -68,8 +68,8 @@ const CreatePostScreen = ({ navigation, route }: Props) => {
   const handlePost = async () => {
     const newPost: any = {
       description: description,
-      numberOfLikes: 102,
-      numberOfShares: 10,
+      numberOfLikes: 0,
+      numberOfShares: 0,
       postUserId: sub,
     }
     if (image) {
@@ -109,12 +109,6 @@ const CreatePostScreen = ({ navigation, route }: Props) => {
       }
       <TouchableOpacity style={styles.buttonContainer} onPress={handlePost}>
         <Text style={styles.buttonText}>Post</Text>
-        <MaterialCommunityIcons
-          style={styles.buttonIcon}
-          name="music-note-whole"
-          size={30}
-          color="white"
-        />
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
@@ -146,26 +140,73 @@ const styles = StyleSheet.create({
   },
   input: { paddingBottom: 20 },
   buttonContainer: {
-    marginTop: "auto",
+    marginTop: 30,
     alignItems: "center",
-    backgroundColor: "blue",
-    borderRadius: 25,
+    borderRadius: 30,
     width: 300,
     alignSelf: "center",
     height: 45,
     justifyContent: "center",
     marginBottom: 15,
     flexDirection: "row",
+    backgroundColor: "#fbeee0",
+    borderWidth: 2,
+    borderColor: '#422800',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,
+
+    elevation: 24,
+    paddingHorizontal: 18,
   },
   buttonText: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#fff",
-    paddingBottom: 5,
+    color: "black",
   },
   icon: {
     marginLeft: "auto",
   },
-  buttonIcon: { paddingBottom: 15 },
-  postImage: { width: "50%", aspectRatio: 4 / 3, alignSelf: "center" },
+  postImage: { width: "50%", aspectRatio: 1, alignSelf: "center" },
 });
+
+
+// < !--HTML!-->
+//   <button class="button-74" role="button">Button 74</button>
+
+// /* CSS */
+// .button - 74 {
+//   box - shadow: #422800 4px 4px 0 0;
+//   color: #422800;
+//   cursor: pointer;
+//   display: inline - block;
+//   font - weight: 600;
+//   font - size: 18px;
+//   padding: 0 18px;
+//   line - height: 50px;
+//   text - align: center;
+//   text - decoration: none;
+//   user - select: none;
+//   -webkit - user - select: none;
+//   touch - action: manipulation;
+// }
+
+// .button - 74:hover {
+//   background - color: #fff;
+// }
+
+// .button - 74:active {
+//   box - shadow: #422800 2px 2px 0 0;
+//   transform: translate(2px, 2px);
+// }
+
+// @media(min - width: 768px) {
+//   .button - 74 {
+//     min - width: 120px;
+//     padding: 0 25px;
+//   }
+// }

@@ -23,7 +23,7 @@ const dummy_img =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
 const bg = "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg";
 
-const profilePictureWidth = Dimensions.get("window").width * 0.4;
+const profilePictureWidth = Dimensions.get("window").width * 0.6;
 
 interface ProfileScreenHeaderProps {
   user: User | undefined;
@@ -118,14 +118,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     alignItems: "center",
-    padding: 10,
   },
   bg: {
     width: "100%",
-    height: 200,
+    aspectRatio: 1,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    marginBottom: -profilePictureWidth / 2,
+    marginBottom: -profilePictureWidth / 1.3,
   },
   image: {
     width: profilePictureWidth,
@@ -135,9 +134,11 @@ const styles = StyleSheet.create({
     borderColor: "white",
   },
   name: {
-    fontWeight: "500",
-    fontSize: 16,
-    marginVertical: 5,
+    fontWeight: "600",
+    textAlign: 'center',
+    letterSpacing: 1.6,
+    fontSize: 20,
+    marginVertical: 15,
   },
   buttonsContainer: {
     paddingVertical: 5,

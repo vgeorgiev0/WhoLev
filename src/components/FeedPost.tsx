@@ -13,6 +13,8 @@ import IconButton from "./IconButton";
 import { S3Image } from "aws-amplify-react-native";
 import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify';
+import { Post } from '../models';
+import { Comment } from '../models';
 
 const dummy_img =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
@@ -23,17 +25,28 @@ interface FeedPostProps {
 }
 
 const FeedPost: React.FC<FeedPostProps> = ({ post, navigation }) => {
+  const [showComments, setShowComments] = useState(true)
   const [isLiked, setIsLiked] = useState(false)
+  const [comments, setComments] = useState<any>()
   const [user, setUser] = useState<User>()
 
   useEffect(() => {
     DataStore.query(User, post.postUserId).then(setUser)
+    // DataStore.query(Comment, (c) => c.postID('eq', post.id)).then(setComments);
   }, [])
 
+
+  const createdAt = new Date(post.createdAt).toUTCString().replace('GMT', '')
 
   const navigateToProfile = () => {
     navigation.navigate("Profile", { id: post.postUserId });
   };
+
+  const comment = <Text>Comment</Text>
+
+  const handleShowComment = () => {
+    setShowComments(false)
+  }
 
   return (
     <View style={styles.post}>
@@ -48,7 +61,7 @@ const FeedPost: React.FC<FeedPostProps> = ({ post, navigation }) => {
         <View>
           {/* @ts-ignore */}
           <Text style={styles.name}>{user?.name}</Text>
-          <Text style={styles.subtitle}>{post.createdAt}</Text>
+          <Text style={styles.subtitle}>{createdAt}</Text>
         </View>
         <Entypo
           name="dots-three-horizontal"
@@ -72,22 +85,22 @@ const FeedPost: React.FC<FeedPostProps> = ({ post, navigation }) => {
             Pesho and {post.numberOfLikes} others
           </Text>
           <Text style={styles.numberOfShares}>
-            {post.numberOfShares} shares
+            {post.numberOfShares} comments
           </Text>
         </View>
         <View style={styles.buttonsRow}>
-          <IconButton Icon={AntDesign} text={"Like"} name={"like2"} />
-          <IconButton
-            Icon={FontAwesome5}
-            text={"Comment"}
-            name={"comment-alt"}
-          />
-          <IconButton
-            Icon={MaterialCommunityIcons}
-            text={"Share"}
-            name={"share-outline"}
-          />
+          <TouchableOpacity onPress={handleShowComment}>
+            <IconButton Icon={AntDesign} text={"Like"} name={"like2"} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleShowComment}>
+            <IconButton
+              Icon={FontAwesome5}
+              text={"Comment"}
+              name={"comment-alt"}
+            />
+          </TouchableOpacity>
         </View>
+        {showComments && <View><Text>Comments</Text></View>}
       </View>
     </View>
   );

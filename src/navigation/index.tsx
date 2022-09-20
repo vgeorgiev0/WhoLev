@@ -37,9 +37,6 @@ const Navigator = () => {
     setSub(authUser.attributes.sub);
     setUser(dbUser);
   };
-  console.log(user?.id);
-  console.log(sub);
-
 
   useEffect(() => {
     fetchUser();
@@ -48,20 +45,18 @@ const Navigator = () => {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator>
-        {user?.id !== sub ? (
-          <Stack.Screen name='FirstEditProfile' component={FirstEditProfile} options={{ title: 'Create your account' }} />
-        ) : null}
-        <Stack.Screen
+      <Stack.Navigator >
+        {user ? (<Stack.Screen
           name="Feed"
           component={FeedScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="CreatePost" component={CreatePostScreen} options={{ title: 'Create a post' }} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        ) : <Stack.Screen name='FirstEditProfile' component={FirstEditProfile} options={{ title: 'Create your account' }} />}
+        <Stack.Screen name="CreatePost" component={CreatePostScreen} options={{ title: 'Create a post', }} />
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={UpdateProfileScreen} options={{ title: 'Edit your profile' }} />
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer >
 
   );
 };

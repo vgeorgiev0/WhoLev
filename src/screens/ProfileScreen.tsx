@@ -1,11 +1,9 @@
-import { Text, StyleSheet, FlatList, Alert } from "react-native";
-
+import { StyleSheet, FlatList, Alert } from "react-native";
 import FeedPost from "../components/FeedPost";
-
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import ProfileScreenHeader from "../components/ProfileScreenHeader";
 import { useEffect, useState } from 'react';
-import { Auth, DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify';
 import { User } from '../models';
 import { Post } from '../models';
 import { subAtom } from '../state/user';
@@ -33,7 +31,7 @@ const ProfileScreen = ({ navigation, route }: Props) => {
       const dbUser = await DataStore.query(User, userId)
       if (!dbUser) {
         if (isMe) {
-          navigation.navigate('EditProfile')
+          navigation.navigate('FirstEditProfile')
         } else {
           Alert.alert('User not found')
         }

@@ -35,6 +35,9 @@ const FeedScreen = ({ navigation, route }: Props) => {
   return (
     <View>
       <FlatList
+        ListFooterComponent={() => (
+          <View style={styles.footer} />
+        )}
         ListHeaderComponent={() => (
           <Pressable onPress={createPost} style={styles.header}>
             <Pressable onPress={navigateToProfile}>
@@ -82,4 +85,5 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: "auto",
   },
+  footer: { marginBottom: 30 },
 });
